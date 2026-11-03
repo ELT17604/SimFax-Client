@@ -7,5 +7,4 @@ xcuserdata/
 *.p12
 *.mobileprovision
 release/*
-Tests/*
 VALIDATION.md
