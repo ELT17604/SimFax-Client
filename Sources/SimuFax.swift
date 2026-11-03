@@ -199,7 +199,10 @@ struct MainView: View {
                 Label("设置", systemImage: "gearshape").tag("设置")
             }.listStyle(.sidebar).navigationTitle("SimuFax")
             VStack(alignment: .leading, spacing: 10) {
-                Label("SIMUFAX / NATIVE", systemImage: "shield.lefthalf.filled").font(.system(size: 10, weight: .semibold, design: .monospaced)).foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("©️ 2026 ELT Group")
+                    Text("V1.0.0")
+                }.font(.system(size: 10, weight: .semibold, design: .monospaced)).foregroundStyle(.secondary)
                 Button { ConsoleWindow.shared.show(model) } label: { Label("请求与响应", systemImage: "terminal") }.buttonStyle(.bordered).help("打开悬浮控制台 ⌘⇧D")
             }.padding(.horizontal).padding(.top, 12)
             VStack(alignment: .leading, spacing: 4) { Text("服务状态").font(.caption).foregroundStyle(.secondary); Text(model.health).font(.caption); Button("检查连接") { Task { await model.healthCheck() } }.buttonStyle(.link) }.padding()
@@ -407,7 +410,8 @@ struct Exchange: Identifiable {
         if panel == nil {
             let p = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 940, height: 640), styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
             p.title = "SimuFax · 请求与响应"
-            p.level = .floating
+            p.level = .normal
+            p.isFloatingPanel = false
             p.isReleasedWhenClosed = false
             p.hidesOnDeactivate = false
             p.minSize = NSSize(width: 740, height: 460)
