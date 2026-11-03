@@ -8,4 +8,5 @@ xcuserdata/
 *.mobileprovision
 release/*
 Tests/*
+!Tests/DiagnosticsChecks.swift
 VALIDATION.md
