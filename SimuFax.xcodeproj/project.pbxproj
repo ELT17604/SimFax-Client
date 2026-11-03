@@ -1,0 +1,27 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1; classes = {}; objectVersion = 56;
+ objects = {
+  B00000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Brand/AppIcon.icns; sourceTree = "<group>"; };
+  B00000000000000000000002 = {isa = PBXBuildFile; fileRef = B00000000000000000000001; };
+
+  A00000000000000000000001 = {isa = PBXBuildFile; fileRef = A00000000000000000000002; };
+  A00000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimuFax.swift; sourceTree = "<group>"; };
+  A00000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimuFax.app; sourceTree = BUILT_PRODUCTS_DIR; };
+  A00000000000000000000004 = {isa = PBXGroup; children = (B00000000000000000000001, A00000000000000000000005, A00000000000000000000006); sourceTree = "<group>"; };
+  A00000000000000000000005 = {isa = PBXGroup; path = Sources; children = (A00000000000000000000002); sourceTree = "<group>"; };
+  A00000000000000000000006 = {isa = PBXGroup; name = Products; children = (A00000000000000000000003); sourceTree = "<group>"; };
+  A00000000000000000000007 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001); runOnlyForDeploymentPostprocessing = 0; };
+  A00000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+  A00000000000000000000009 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000002); runOnlyForDeploymentPostprocessing = 0; };
+  A0000000000000000000000A = {isa = PBXNativeTarget; buildConfigurationList = A0000000000000000000000F; buildPhases = (A00000000000000000000007, A00000000000000000000008, A00000000000000000000009); buildRules = (); dependencies = (); name = SimuFax; productName = SimuFax; productReference = A00000000000000000000003; productType = "com.apple.product-type.application"; };
+  A0000000000000000000000B = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastUpgradeCheck = 2600; TargetAttributes = {A0000000000000000000000A = {CreatedOnToolsVersion = 26.0; }; }; }; buildConfigurationList = A0000000000000000000000E; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base, zh-Hans); mainGroup = A00000000000000000000004; productRefGroup = A00000000000000000000006; projectDirPath = ""; projectRoot = ""; targets = (A0000000000000000000000A); };
+  A0000000000000000000000C = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; }; name = Debug; };
+  A0000000000000000000000D = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; }; name = Release; };
+  A0000000000000000000000E = {isa = XCConfigurationList; buildConfigurations = (A0000000000000000000000C, A0000000000000000000000D); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  A0000000000000000000000F = {isa = XCConfigurationList; buildConfigurations = (A00000000000000000000010, A00000000000000000000011); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  A00000000000000000000010 = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = SimuFax; INFOPLIST_KEY_CFBundleIconFile = AppIcon; MARKETING_VERSION = 1.1; CURRENT_PROJECT_VERSION = 2; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = uk.verstappen.simufax.client; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; }; name = Debug; };
+  A00000000000000000000011 = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = SimuFax; INFOPLIST_KEY_CFBundleIconFile = AppIcon; MARKETING_VERSION = 1.1; CURRENT_PROJECT_VERSION = 2; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = uk.verstappen.simufax.client; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; }; name = Release; };
+ };
+ rootObject = A0000000000000000000000B;
+}

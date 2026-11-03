@@ -1,0 +1,17 @@
+name: macOS build
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: xcrun swiftc --version
+      - name: Offline diagnostic checks
+        run: ./scripts/test.sh
+      - name: Compile and sign local app
+        run: ./scripts/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SimuFax-macOS
+          path: release/SimuFax-macOS-*.zip

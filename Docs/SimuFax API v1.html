@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SimuFax API v1</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --text: #1f2933;
+      --text-2: #4b5563;
+      --muted: #6b7280;
+      --border: #e2e6ea;
+      --border-strong: #cfd5db;
+      --accent: #2563eb;
+      --code: #111827;
+      --danger: #b42318;
+      --ok: #067647;
+      --warning: #b54708;
+      --mono: "DejaVu Sans Mono", "Noto Sans Mono", "Liberation Mono", monospace;
+      --sans: "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1, h2, h3, p, dl, dd { margin: 0; }
+    code { font-family: var(--mono); font-size: .9em; }
+    .topbar {
+      background: #111827;
+      color: #fff;
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 28px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 7px;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .brand strong { font-size: 18px; }
+    .version {
+      color: #9ca3af;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .hero {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 28px;
+    }
+    .kicker {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    h1 {
+      margin-top: 8px;
+      font-size: 38px;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+    .hero p {
+      max-width: 700px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .base-url {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 680px;
+      margin-top: 24px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+    }
+    .base-url span { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .base-url code { overflow-wrap: anywhere; }
+    .layout {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 34px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 28px 70px;
+    }
+    .toc { position: sticky; top: 24px; align-self: start; }
+    .toc strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .toc a {
+      display: block;
+      padding: 6px 0;
+      color: var(--text-2);
+      font-size: 14px;
+    }
+    .toc a:hover { color: var(--accent); }
+    main { min-width: 0; }
+    section {
+      padding: 0 0 34px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: 0; margin-bottom: 0; }
+    h2 {
+      margin-bottom: 12px;
+      font-size: 24px;
+      line-height: 1.35;
+    }
+    h3 { margin: 22px 0 8px; font-size: 18px; }
+    p { margin: 10px 0; color: var(--text-2); }
+    .note {
+      margin: 14px 0;
+      padding: 12px 14px;
+      color: var(--text-2);
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .note strong { color: var(--text); }
+    table {
+      width: 100%;
+      margin: 14px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+    th {
+      padding: 9px 12px;
+      color: var(--muted);
+      background: #f1f3f5;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    td code, th code { white-space: nowrap; }
+    .endpoint {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 14px 0;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .method {
+      padding: 3px 7px;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .endpoint code { overflow-wrap: anywhere; }
+    pre {
+      margin: 14px 0;
+      padding: 16px;
+      overflow-x: auto;
+      color: #e5e7eb;
+      background: var(--code);
+      border-radius: 7px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.75;
+      white-space: pre;
+    }
+    pre code { padding: 0; background: transparent; font-size: inherit; }
+    .status-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .status-item {
+      padding: 11px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .status-item strong { display: block; font-family: var(--mono); font-size: 13px; }
+    .status-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
+    .footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px 40px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 18px 50px; }
+      .toc { position: static; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+      .toc strong { width: 100%; margin-bottom: 4px; }
+      .toc a { padding: 2px 0; }
+      .topbar-inner, .hero-inner, .footer { padding-left: 18px; padding-right: 18px; }
+      h1 { font-size: 31px; }
+    }
+    @media (max-width: 560px) {
+      .status-list { grid-template-columns: minmax(0, 1fr); }
+      .base-url { display: block; }
+      .base-url code { display: block; margin-top: 5px; }
+      .topbar-inner { align-items: flex-start; }
+      .version { text-align: right; }
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">SF</span>
+      <strong>SimuFax API</strong>
+    </div>
+    <span class="version">v1 · HTTPS · 2026-11-03</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="kicker">传真投递接口</div>
+    <h1>通过 HTTPS 发送传真</h1>
+    <p>上传 PDF、图片或文本文件，接收后返回任务编号。可以查询任务的处理状态。</p>
+    <div class="base-url">
+      <span>Base URL</span>
+      <code>https://fax.verstappen.uk</code>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="toc" aria-label="文档目录">
+    <strong>目录</strong>
+    <a href="#auth">鉴权</a>
+    <a href="#send">发送传真</a>
+    <a href="#fields">请求字段</a>
+    <a href="#limits">文件限制</a>
+    <a href="#response">响应</a>
+    <a href="#status">查询状态</a>
+    <a href="#errors">错误码</a>
+    <a href="#examples">调用示例</a>
+    <a href="#retry">重试与幂等</a>
+  </nav>
+
+  <main>
+    <section id="auth">
+      <h2>鉴权</h2>
+      <p>每次请求都需要在报头中携带 Bearer 密钥。密钥由传真站管理员发放。</p>
+      <pre><code>Authorization: Bearer sfx_xxxxxxxxxxxxxxxxxxxx</code></pre>
+      <p>也可以使用兼容报头：</p>
+      <pre><code>X-SimuFax-Key: sfx_xxxxxxxxxxxxxxxxxxxx</code></pre>
+      <div class="note">
+        <strong>请妥善保管密钥。</strong> 不要把密钥放在 URL、公开仓库或日志中。密钥遗失或泄漏时，请联系管理员停用并更换。
+      </div>
+      <p><code>sender</code>、<code>recipient</code>、<code>subject</code> 等字段均为自由文本，密钥有效即可发送。</p>
+    </section>
+
+    <section id="send">
+      <h2>发送传真</h2>
+      <div class="endpoint">
+        <span class="method">POST</span>
+        <code>/api/v1/fax</code>
+      </div>
+      <p>请求类型必须是 <code>multipart/form-data</code>。文件放在 <code>file</code> 字段中，元数据可以放在表单字段或报头中。</p>
+      <pre><code>curl --fail-with-body \
+  -X POST "https://fax.verstappen.uk/api/v1/fax" \
+  -H "Authorization: Bearer $SIMUFAX_KEY" \
+  -F "sender=财务室" \
+  -F "recipient=传真站" \
+  -F "subject=十一月对账单" \
+  -F "file=@invoice.pdf"</code></pre>
+      <p>接收成功返回 <code>202 Accepted</code>，并带有任务编号。返回成功只表示文件已被接收，处理状态请通过状态接口查询。</p>
+    </section>
+
+    <section id="fields">
+      <h2>请求字段</h2>
+      <h3>表单字段</h3>
+      <table>
+        <thead><tr><th>字段</th><th>必需</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>file</code></td><td>是</td><td>要发送的文件。</td></tr>
+          <tr><td><code>sender</code></td><td>否</td><td>发件人名称，可以任意填写；缺省为“未知发件人”。</td></tr>
+          <tr><td><code>recipient</code></td><td>否</td><td>收件人，缺省使用站点默认值。</td></tr>
+          <tr><td><code>subject</code></td><td>否</td><td>主题，最多 200 个字符。</td></tr>
+          <tr><td><code>message</code></td><td>否</td><td>附言，最多 2000 个字符。</td></tr>
+          <tr><td><code>message_id</code></td><td>否</td><td>幂等编号，也可以通过报头传递。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>可选报头</h3>
+      <table>
+        <thead><tr><th>报头</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>X-SimuFax-Message-Id</code></td><td>幂等编号。相同密钥和发件人重复提交时返回原任务。</td></tr>
+          <tr><td><code>X-SimuFax-Sha256</code></td><td>文件 SHA-256，共 64 位十六进制字符。提供时会校验文件完整性。</td></tr>
+          <tr><td><code>X-SimuFax-Pages</code></td><td>页数。提供时必须与实际页数一致。</td></tr>
+          <tr><td><code>X-SimuFax-Timestamp</code></td><td>发送端时间，仅记录。</td></tr>
+          <tr><td><code>X-SimuFax-Client-IP</code></td><td>发送端声明的 IP 地址，仅记录。</td></tr>
+        </tbody>
+      </table>
+      <p>涉及中文的字段建议放在表单字段中，避免 HTTP 报头的字符集差异。</p>
+    </section>
+
+    <section id="limits">
+      <h2>文件限制</h2>
+      <p>接受以下文件类型：</p>
+      <ul>
+        <li>PDF</li>
+        <li>PNG、JPEG</li>
+        <li>TIFF</li>
+        <li>UTF-8 或 GB18030 编码的纯文本</li>
+      </ul>
+      <p>单文件大小上限和页数上限由站点配置决定。超过限制时返回 <code>413</code> 或 <code>422</code>。建议中文文档使用 PDF。</p>
+      <p>接口对请求频率有限制。超过限制时返回 <code>429 Too Many Requests</code>，并带有 <code>Retry-After</code> 响应头。</p>
+    </section>
+
+    <section id="response">
+      <h2>响应</h2>
+      <pre><code>HTTP/1.1 202 Accepted
+Content-Type: application/json</code></pre>
+      <pre><code>{
+  "ok": true,
+  "id": "F20261103-A1B2C3D4E5",
+  "status": "pending",
+  "pages": 3,
+  "checksum": "a1b2c3...",
+  "duplicate": false,
+  "received_at": "2026-11-03T11:30:00+00:00"
+}</code></pre>
+      <p>如果同一个 <code>X-SimuFax-Message-Id</code> 重复提交，会返回 <code>200</code> 和原任务，<code>duplicate</code> 为 <code>true</code>。</p>
+    </section>
+
+    <section id="status">
+      <h2>查询状态</h2>
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <code>/api/v1/fax/{id}</code>
+      </div>
+      <p>使用发送时同一把密钥：</p>
+      <pre><code>curl -s \
+  -H "Authorization: Bearer $SIMUFAX_KEY" \
+  "https://fax.verstappen.uk/api/v1/fax/F20261103-A1B2C3D4E5"</code></pre>
+      <div class="status-list">
+        <div class="status-item"><strong>pending</strong><span>已接收，等待处理</span></div>
+        <div class="status-item"><strong>printing</strong><span>正在打印</span></div>
+        <div class="status-item"><strong>printed</strong><span>打印完成</span></div>
+        <div class="status-item"><strong>rejected</strong><span>已被站点拒绝</span></div>
+        <div class="status-item"><strong>failed</strong><span>处理失败</span></div>
+      </div>
+    </section>
+
+    <section id="errors">
+      <h2>错误码</h2>
+      <table>
+        <thead><tr><th>HTTP</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>400</code></td><td>请求参数或报头格式错误。</td></tr>
+          <tr><td><code>401</code></td><td>缺少密钥或密钥无效。</td></tr>
+          <tr><td><code>404</code></td><td>任务不存在，或密钥无权查询。</td></tr>
+          <tr><td><code>409</code></td><td>幂等编号冲突。</td></tr>
+          <tr><td><code>413</code></td><td>请求体过大。</td></tr>
+          <tr><td><code>415</code></td><td>Content-Type 不是 multipart/form-data。</td></tr>
+          <tr><td><code>422</code></td><td>文件类型、大小、页数或校验值不符合要求。</td></tr>
+          <tr><td><code>429</code></td><td>请求过于频繁。请按 Retry-After 等待。</td></tr>
+          <tr><td><code>500</code></td><td>服务处理失败。</td></tr>
+          <tr><td><code>503</code></td><td>服务暂时不可用。</td></tr>
+        </tbody>
+      </table>
+      <p>错误响应：</p>
+      <pre><code>{
+  "ok": false,
+  "error": "SHA-256 校验失败，文件可能在传输中损坏",
+  "code": "invalid_document"
+}</code></pre>
+      <p>健康检查：<code>GET /api/v1/health</code>，不需要鉴权。</p>
+    </section>
+
+    <section id="examples">
+      <h2>调用示例</h2>
+      <h3>Linux / macOS</h3>
+      <pre><code>export SIMUFAX_KEY='sfx_...'
+export FILE='/path/to/invoice.pdf'
+HASH="$(sha256sum "$FILE" | awk '{print $1}')"
+
+curl --fail-with-body \
+  -X POST 'https://fax.verstappen.uk/api/v1/fax' \
+  -H "Authorization: Bearer $SIMUFAX_KEY" \
+  -H "X-SimuFax-Message-Id: $(date +%s)-$USER" \
+  -H "X-SimuFax-Sha256: $HASH" \
+  -F "sender=财务室" \
+  -F "recipient=传真站" \
+  -F "subject=十一月对账单" \
+  -F "file=@$FILE"</code></pre>
+      <p>macOS 可使用 <code>shasum -a 256 "$FILE"</code> 计算哈希。</p>
+
+      <h3>Python</h3>
+      <pre><code>import hashlib
+import requests
+
+path = "invoice.pdf"
+key = "sfx_..."
+
+with open(path, "rb") as handle:
+    files = {"file": (path, handle, "application/pdf")}
+    data = {
+        "sender": "财务室",
+        "recipient": "传真站",
+        "subject": "十一月对账单",
+    }
+    response = requests.post(
+        "https://fax.verstappen.uk/api/v1/fax",
+        headers={
+            "Authorization": f"Bearer {key}",
+            "X-SimuFax-Sha256": hashlib.sha256(open(path, "rb").read()).hexdigest(),
+        },
+        data=data,
+        files=files,
+        timeout=120,
+    )
+
+print(response.status_code)
+print(response.json())</code></pre>
+
+      <h3>Windows PowerShell</h3>
+      <pre><code>$env:SIMUFAX_KEY = "sfx_..."
+$file = "C:\path\invoice.pdf"
+$hash = (Get-FileHash $file -Algorithm SHA256).Hash.ToLower()
+
+curl.exe --fail-with-body `
+  -X POST "https://fax.verstappen.uk/api/v1/fax" `
+  -H "Authorization: Bearer $env:SIMUFAX_KEY" `
+  -H "X-SimuFax-Sha256: $hash" `
+  -F "sender=财务室" `
+  -F "recipient=传真站" `
+  -F "subject=十一月对账单" `
+  -F "file=@$file"</code></pre>
+      <p>OpenAPI 文件：<a href="/api-docs/openapi.yaml">openapi.yaml</a></p>
+    </section>
+
+    <section id="retry">
+      <h2>重试与幂等</h2>
+      <p>建议每次发送使用唯一的 <code>X-SimuFax-Message-Id</code>。网络超时或连接中断时，可以用同一个编号重试，不会重复创建任务。</p>
+      <ul>
+        <li><code>202</code> 或 <code>200</code>：不要重试。</li>
+        <li><code>429</code>：等待 <code>Retry-After</code> 后再试。</li>
+        <li><code>500</code> 或 <code>503</code>：可以使用相同编号稍后重试。</li>
+        <li><code>4xx</code> 参数错误：修正请求后再试。</li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<div class="footer">SimuFax API v1 · 接口文档</div>
+</body>
+</html>
